@@ -7,8 +7,13 @@
 # imports
 from __future__ import print_function
 import librosa
-import numpy as np
 import datetime
+import matplotlib
+from scipy.io import wavfile # scipy library to read wav files
+from scipy.fftpack import fft
+import numpy as np
+import matplotlib.pyplot as plt
+matplotlib.use("TkAgg")
 
 def startAnalysis():
     print("analysis started")
@@ -23,3 +28,13 @@ def startAnalysis():
     peak_times = librosa.frames_to_time(peaks, sr=sr)
     #librosa.output.times_csv('./output/peak_times.csv', peak_times)
     #print("Peak times output to ./output/peak_times.csv. \n Process complete.")
+
+
+def openAudioSpectrum():
+    AudioName = "C:/Users/pkhoc/Desktop/sounds.wav"
+    fs, Audiodata = wavfile.read(AudioName)
+
+    plt.plot(Audiodata)
+    plt.title("Audio signal in time", size=8)
+
+    plt.show()

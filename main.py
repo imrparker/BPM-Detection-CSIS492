@@ -3,7 +3,7 @@
 # Author: Parker Ostertag
 # CSIS 492 Spring 2020
 import userInterface
-
+import matplotlib.pyplot as plt
 
 def main():
     print("hello world")

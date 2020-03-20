@@ -37,7 +37,7 @@ def createUI():
 
     #toolbar = Frame(root, bg = "orange")
     toolbar = Frame(root)
-    button1 = Button(toolbar, text = "button1", command = audioAnalysisWindow)
+    button1 = Button(toolbar, text = "Show Audio Spectrum", command = audioAnalysis.openAudioSpectrum)
     button1.pack(side = LEFT, padx = 2, pady = 20)
     toolbar.pack(side = TOP, fill = X)
 
