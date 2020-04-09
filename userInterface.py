@@ -21,12 +21,12 @@ def createUI():
     def fileBrowser():
         # This program can only analyse .wav files at the moment... I think
         root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                                     filetypes=(("wav files", "*.wav"), ("all files", "*.*")))
+                                                   filetypes=(("wav files", "*.wav"), ("all files", "*.*")))
 
     def audioAnalysisWindow():
         newroot = Tk()
         newroot.title("Audio Analysis")
-        #newroot.mainloop()
+        # newroot.mainloop()
         audioAnalysis.startAnalysis()
 
     # ROOT
@@ -35,14 +35,19 @@ def createUI():
     menu = Menu(root)
     root.config(menu=menu)
 
-    #toolbar = Frame(root, bg = "orange")
+    # toolbar = Frame(root, bg = "orange")
     toolbar = Frame(root)
-    button1 = Button(toolbar, text = "Show Audio Spectrum", command = audioAnalysis.openAudioSpectrum)
-    button1.pack(side = LEFT, padx = 2, pady = 20)
-    toolbar.pack(side = TOP, fill = X)
+
+    # MIDI TEMPO ANALYSIS
+    button1 = Button(toolbar, text="MIDI Tempo Analysis", command=doNothing, height=30, width=50, bg="#C2C2C2")
+    button1.pack(side=LEFT, padx=10, pady=20)
+    toolbar.pack(side=TOP, fill=X)
+
+    button2 = Button(toolbar, text="WAV Tempo Analysis", command=fileBrowser, height=30, width=50, bg="#C2C2C2")
+    button2.pack(side=RIGHT, padx=10, pady=20)
 
     # FRAME
-    frame = Frame(root, width=900, height=550)
+    frame = Frame(root, width=600, height=0)
     frame.pack()
 
     # FILE MENU
