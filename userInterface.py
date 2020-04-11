@@ -23,6 +23,8 @@ def createUI():
         root.filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                                    filetypes=(("wav files", "*.wav"), ("all files", "*.*")))
 
+        if root.filename == '':
+            return 1
 
         audioAnalysis.startAnalysis(root.filename)
         audioAnalysis.openAudioSpectrum(root.filename)
