@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import ttk
-
+import BPMdb
 matplotlib.use("TkAgg")
 
 LARGE_FONT = ("Verdana", 12)
@@ -72,6 +72,6 @@ def wavResults(filepath, msg, peakNum, duration):
     songDuration.pack(side="top", fill="x", pady=10)
     B1 = ttk.Button(popup, text="Okay", command=popup.destroy)
     B1.pack()
-    B2 = ttk.Button(popup, text="Save", command=donothing)
+    B2 = ttk.Button(popup, text="Save", command=lambda: BPMdb.WAVInsert(filepath, msg, peakNum, duration))
     B2.pack()
     popup.mainloop()
