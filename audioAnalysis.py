@@ -15,14 +15,14 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import ttk
 import BPMdb
+import midi
+from mido import MidiFile
+
 matplotlib.use("TkAgg")
-
-LARGE_FONT = ("Verdana", 12)
 NORM_FONT = ("Helvetica", 10)
-SMALL_FONT = ("Helvetica", 8)
 
 
-def startAnalysis(filepath):
+def startWAVAnalysis(filepath):
     print("analysis started")
     y, sr = librosa.load(filepath)
     duration = librosa.get_duration(y)
@@ -44,6 +44,25 @@ def startAnalysis(filepath):
     wavResults(filepath, estmp, peakNum, duration)
 
 
+def startMIDIAnalysis(filepath):
+    metaList = []
+
+    mid = MidiFile(filepath, clip=True)
+    for x in mid.tracks[0]:
+        metaList.append(x)
+
+    strList = str(metaList[4])
+    if strList[36] == " ":
+        strList = strList[30:36]
+    elif strList[36] == "t":
+        strList = strList[30:35]
+
+    intTempo = (int(strList) / 600000) * 100
+    print(str(intTempo))
+
+    midiResults(filepath, str(intTempo))
+
+
 def openAudioSpectrum(filepath):
     AudioName = filepath
     fs, Audiodata = wavfile.read(AudioName)
@@ -51,6 +70,19 @@ def openAudioSpectrum(filepath):
     plt.plot(Audiodata)
     plt.title("Audio File (Time)", size=8)
 
+    plt.show()
+
+
+def openMidiSpectrum(filepath):
+    song = midi.read_midifile(filepath)
+    song.make_ticks_abs()
+    tracks = []
+    for track in song:
+        notes = [note for note in track if note.name == 'Note On']
+        pitch = [note.pitch for note in notes]
+        tick = [note.tick for note in notes]
+        tracks += [tick, pitch]
+    plt.plot(*tracks)
     plt.show()
 
 
@@ -73,5 +105,24 @@ def wavResults(filepath, msg, peakNum, duration):
     B1 = ttk.Button(popup, text="Okay", command=popup.destroy)
     B1.pack()
     B2 = ttk.Button(popup, text="Save", command=lambda: BPMdb.WAVInsert(filepath, msg, peakNum, duration))
+    B2.pack()
+    B2 = ttk.Button(popup, text="Show Audio Spectrum", command=lambda: openAudioSpectrum(filepath))
+    B2.pack()
+    popup.mainloop()
+
+
+def midiResults(filepath, msg):
+    popup = tk.Tk()
+    popup.geometry("500x250")
+    popup.wm_title("MIDI Results")
+    filename = ttk.Label(popup, text="File: " + filepath, font=NORM_FONT)
+    filename.pack(side="top", fill="x", pady=10)
+    tempo = ttk.Label(popup, text="Estimated Tempo: " + str(msg) + " BPM", font=NORM_FONT)
+    tempo.pack(side="top", fill="x", pady=10)
+    B1 = ttk.Button(popup, text="Okay", command=popup.destroy)
+    B1.pack()
+    B2 = ttk.Button(popup, text="Save", command=lambda: BPMdb.MIDIInsert(filepath, msg))
+    B2.pack()
+    B2 = ttk.Button(popup, text="Show Audio Spectrum", command=lambda: openMidiSpectrum(filepath))
     B2.pack()
     popup.mainloop()
