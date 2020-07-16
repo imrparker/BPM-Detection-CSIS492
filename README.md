@@ -1,6 +1,10 @@
 # BPM-Detection-CSIS492
 Program designed to detect the tempo of audio files
 
-Dependencies: 
-The "numba" package must be version .48. See below
+Dependencies (last successful run): 
+pip install librosa
 pip install numba==0.48
+pip install matplotlib (I think 3.3.0?)
+pip install pymssql
+pip install py-midi
+pip install mido
